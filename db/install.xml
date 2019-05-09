@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<XMLDB PATH="admin/tool/corruptpdfdetector/db" VERSION="20190505" COMMENT="XMLDB file for Moodle admin/tool/corruptpdfdetector"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="../../../../lib/xmldb/xmldb.xsd"
+>
+  <TABLES>
+    <TABLE NAME="tool_pdfdetect_assigns" COMMENT="Table to store affected assignments">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="assignid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+      <FIELD NAME="submissionid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+      <FIELD NAME="coursename" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false"/>
+      <FIELD NAME="assignname" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false"/>
+      <FIELD NAME="userfullname" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false"/>
+	    <FIELD NAME="email" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false"/>
+      <FIELD NAME="filename" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false"/>
+      <FIELD NAME="message" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false"/>
+      <FIELD NAME="submitted" TYPE="int" LENGTH="20" NOTNULL="false" SEQUENCE="false"/>
+      <FIELD NAME="detected" TYPE="int" LENGTH="20" NOTNULL="false" SEQUENCE="false"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="assignid" UNIQUE="false" FIELDS="assignid"/>
+	      <INDEX NAME="submissionid" UNIQUE="true" FIELDS="submissionid"/>
+      </INDEXES>
+    </TABLE>
+  </TABLES>
+</XMLDB>
