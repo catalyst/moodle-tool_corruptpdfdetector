@@ -106,4 +106,18 @@ class assignments extends html_table
 
         return $records;
     }
+
+    public function get_percentage()
+    {
+        global $DB;
+
+        $submissioncount = $DB->count_records('assign_submission');
+        $filecount = $DB->count_records_select('tool_pdfdetect_assigns',
+        'fixed = ?', array(false), 'COUNT(DISTINCT submissionid)');
+
+        if ($filecount === 0 || $submissioncount === 0) {
+            return '0';
+        }
+        return round ($filecount * 100 / $submissioncount).'%';
+    }
 }

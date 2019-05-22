@@ -37,6 +37,7 @@ $string['reasonheader'] = 'Reason';
 $string['pluginname'] = 'Corrupt pdf assignment finder';
 $string['detectedheader'] = 'Detected';
 $string['task_scan_assignments'] = 'Scan assignments task';
+$string['error_percentage'] = 'Faulty pdf file percentage: ';
 $string['privacy:metadata:tool_pdfdetect_assigns'] = 'Information about the assignment that found corrupt pdf file. This includes the course, assignment name, student name and email.';
 $string['privacy:metadata:tool_pdfdetect_assigns:userid'] = 'The ID of the user with this assignment.';
 $string['privacy:metadata:tool_pdfdetect_assigns:email'] = 'The email of the user who submits the assignment.';

@@ -17,6 +17,7 @@
       <FIELD NAME="message" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false"/>
       <FIELD NAME="submitted" TYPE="int" LENGTH="20" NOTNULL="false" SEQUENCE="false"/>
       <FIELD NAME="detected" TYPE="int" LENGTH="20" NOTNULL="false" SEQUENCE="false"/>
+      <FIELD NAME="fixed" TYPE="int" LENGTH="1" NOTNULL="true" SEQUENCE="false"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
@@ -24,6 +25,20 @@
       <INDEXES>
         <INDEX NAME="assignid" UNIQUE="false" FIELDS="assignid"/>
 	      <INDEX NAME="submissionid" UNIQUE="true" FIELDS="submissionid"/>
+      </INDEXES>
+    </TABLE>
+        <TABLE NAME="tool_pdfdetect_runs" COMMENT="Table to store completed runs">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="lastsubmissionid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="runtime" TYPE="int" LENGTH="20" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="detectednumber" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+	      <INDEX NAME="lastsubmissionid" UNIQUE="false" FIELDS="lastsubmissionid"/>
       </INDEXES>
     </TABLE>
   </TABLES>
