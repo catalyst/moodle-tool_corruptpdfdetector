@@ -62,7 +62,7 @@ class scan_assignments extends \core\task\scheduled_task
             $lastsubmitid = end($lastrun)->lastsubmissionid;
         }
         // Fetch all assignment submissions updated after last run that has detected badly converted assignment submission.
-        $records = $DB->get_records_sql('SELECT * FROM {assign_submission} WHERE id > :id ORDER BY timecreated ASC LIMIT :num', ['id' => $lastsubmitid, 'num' => NUMBER_OF_EACH_RUN]);
+        $records = $DB->get_records_sql('SELECT * FROM {assign_submission} WHERE userid > 0 AND id > :id ORDER BY timecreated ASC LIMIT :num', ['id' => $lastsubmitid, 'num' => NUMBER_OF_EACH_RUN]);
         $detectednum = 0;
         $run = new \stdClass();
 
