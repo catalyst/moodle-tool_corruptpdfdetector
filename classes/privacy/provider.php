@@ -24,6 +24,8 @@
 
 namespace tool_corruptpdfdetector\privacy;
 
+use core_privacy\local\metadata\collection;
+
 defined('MOODLE_INTERNAL') || die();
 
 /**
@@ -39,10 +41,10 @@ class provider implements \core_privacy\local\metadata\provider
      * Get the language string identifier with the component's language
      * file to explain why this plugin stores no data.
      *
-     * @return  string
+     * @param   collection $collection
+     * @return  collection
      */
-    public static function get_metadata(collection $collection): collection
-    {
+    public static function get_metadata(collection $collection): collection {
         $collection->add_database_table(
             'tool_pdfdetect_assigns',
             [

@@ -48,8 +48,7 @@ class assignments extends html_table
     /**
      * Constructor
      */
-    public function __construct()
-    {
+    public function __construct() {
         parent::__construct();
 
         $this->attributes['class'] = 'admintable generaltable';
@@ -98,8 +97,7 @@ class assignments extends html_table
      *
      * @return array
      */
-    private function get_detected_assignments()
-    {
+    private function get_detected_assignments() {
         global $DB;
 
         $records = $DB->get_records('tool_pdfdetect_assigns', [], 'detected ASC');
@@ -107,8 +105,7 @@ class assignments extends html_table
         return $records;
     }
 
-    public function get_percentage()
-    {
+    public function get_percentage() {
         global $DB;
 
         $submissioncount = $DB->count_records('assign_submission');

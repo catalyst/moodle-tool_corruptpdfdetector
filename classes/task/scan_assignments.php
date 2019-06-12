@@ -25,6 +25,8 @@
 
 namespace tool_corruptpdfdetector\task;
 
+defined('MOODLE_INTERNAL') || die();
+global $CFG;
 require_once($CFG->dirroot . '/mod/assign/locallib.php');
 require_once($CFG->dirroot . '/mod/assign/feedback/editpdf/fpdi/fpdi_pdf_parser.php');
 
@@ -41,8 +43,7 @@ class scan_assignments extends \core\task\scheduled_task
      * {@inheritDoc}
      * @see \core\task\scheduled_task::get_name()
      */
-    public function get_name()
-    {
+    public function get_name() {
         return get_string('task_scan_assignments', 'tool_corruptpdfdetector');
     }
 
@@ -50,27 +51,33 @@ class scan_assignments extends \core\task\scheduled_task
      * {@inheritDoc}
      * @see \core\task\task_base::execute()
      */
-    public function execute()
-    {
+    public function execute() {
         global $DB;
 
         // Get the last submission id that had been checked in last run.
-        $lastrun = $DB->get_records_sql('SELECT lastsubmissionid FROM {tool_pdfdetect_runs} ORDER BY runtime DESC LIMIT :one', ['one' => ONE]);
+        $lastrun = $DB->get_records_sql('SELECT lastsubmissionid
+                                               FROM {tool_pdfdetect_runs}
+                                           ORDER BY runtime
+                                               DESC LIMIT :one', ['one' => ONE]);
 
         $lastsubmitid = 0;
         if ($lastrun) {
             $lastsubmitid = end($lastrun)->lastsubmissionid;
         }
         // Fetch all assignment submissions updated after last run that has detected badly converted assignment submission.
-        $records = $DB->get_records_sql('SELECT * FROM {assign_submission} WHERE id > :id ORDER BY timecreated ASC LIMIT :num', ['id' => $lastsubmitid, 'num' => NUMBER_OF_EACH_RUN]);
+        $records = $DB->get_records_sql('SELECT *
+                                               FROM {assign_submission}
+                                              WHERE id > :id
+                                           ORDER BY timecreated
+                                                ASC LIMIT :num', ['id' => $lastsubmitid, 'num' => NUMBER_OF_EACH_RUN]);
         $detectednum = 0;
         $run = new \stdClass();
 
-        if (count($records) > 0) { // if we still have not finished all submission check
+        if (count($records) > 0) { // If we still have not finished all submission check.
             $run->lastsubmissionid = end($records)->id;
             foreach ($records as $submission) {
-                $detected_submission = $this->detected_submission($submission);
-                if ($detected_submission != null) {
+                $detectedsubmission = $this->detected_submission($submission);
+                if ($detectedsubmission != null) {
                     $pdfwitherror = $this->check_submission_combined_pdf($submission);
                     $detected = $DB->get_record('tool_pdfdetect_assigns', array('submissionid' => $submission->id));
                     $detected->submitted = $submission->timemodified;
@@ -89,7 +96,7 @@ class scan_assignments extends \core\task\scheduled_task
                 }
             }
         } else {
-            //reset to the top of the submission list
+            // Reset to the top of the submission list.
             $run->lastsubmissionid = 0;
         }
         $run->runtime = time();
@@ -97,8 +104,7 @@ class scan_assignments extends \core\task\scheduled_task
         $DB->insert_record('tool_pdfdetect_runs', $run);
     }
 
-    private function get_pdf_file_for_assignment($assignment, $submission)
-    {
+    private function get_pdf_file_for_assignment($assignment, $submission) {
         $grade = $assignment->get_user_grade($submission->userid, true, $submission->attemptnumber);
         $contextid = $assignment->get_context()->id;
         $component = 'assignfeedback_editpdf';
@@ -111,8 +117,7 @@ class scan_assignments extends \core\task\scheduled_task
         return $fs->get_file($contextid, $component, $pdfarea, $itemid, $filepath, $pdfname);
     }
 
-    private function detected_submission($submission)
-    {
+    private function detected_submission($submission) {
         global $DB;
 
         $params = ['submissionid' => $submission->id];
@@ -126,8 +131,7 @@ class scan_assignments extends \core\task\scheduled_task
         return null;
     }
 
-    private function check_submission_combined_pdf($submission)
-    {
+    private function check_submission_combined_pdf($submission) {
         global $DB;
 
         $cm = \get_coursemodule_from_instance('assign', $submission->assignment, 0, false, MUST_EXIST);
@@ -139,8 +143,8 @@ class scan_assignments extends \core\task\scheduled_task
 
         if ($pdf) {
             try {
-                $tmp_pdf_path = $pdf->copy_content_to_temp();
-                $fpdf = new \fpdi_pdf_parser($tmp_pdf_path);
+                $tmppdfpath = $pdf->copy_content_to_temp();
+                $fpdf = new \fpdi_pdf_parser($tmppdfpath);
                 unset($fpdf);
             } catch (\Exception $e) {
                 $pdfwitherror = new \stdClass();
@@ -158,7 +162,7 @@ class scan_assignments extends \core\task\scheduled_task
 
                 return $pdfwitherror;
             }
-            unlink($tmp_pdf_path);
+            unlink($tmppdfpath);
             return null;
         }
     }
