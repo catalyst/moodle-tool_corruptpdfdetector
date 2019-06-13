@@ -108,7 +108,12 @@ class scan_assignments extends \core\task\scheduled_task
         $pdfname = 'combined.pdf';
         $filepath = '/';
 
-        return $fs->get_file($contextid, $component, $pdfarea, $itemid, $filepath, $pdfname);
+        $file = $fs->get_file($contextid, $component, $pdfarea, $itemid, $filepath, $pdfname);
+        if ($file) {
+            return $file;
+        } else {
+            return $fs->get_file($contextid, $component, 'partial', $itemid, $filepath, $pdfname);
+        }
     }
 
     private function detected_submission($submission)
