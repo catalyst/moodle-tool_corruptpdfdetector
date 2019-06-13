@@ -27,5 +27,6 @@ defined('MOODLE_INTERNAL') || die;
 
 if ($hassiteconfig) {
     $url = new moodle_url("/admin/tool/corruptpdfdetector");
-    $ADMIN->add('server', new admin_externalpage('tool_corruptpdfdetector', get_string('pluginname', 'tool_corruptpdfdetector'), $url));
+    $ADMIN->add('server', new admin_externalpage('tool_corruptpdfdetector',
+        get_string('pluginname', 'tool_corruptpdfdetector'), $url));
 }

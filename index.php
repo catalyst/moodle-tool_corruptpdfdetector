@@ -36,5 +36,5 @@ echo $OUTPUT->header();
 echo html_writer::tag('h1', get_string('h1_current', 'tool_corruptpdfdetector'));
 echo html_writer::table($assignments);
 echo html_writer::empty_tag('br');
-echo html_writer::tag('p', get_string('error_percentage','tool_corruptpdfdetector') . $assignments->get_percentage());
+echo html_writer::tag('p', get_string('error_percentage', 'tool_corruptpdfdetector') . $assignments->get_percentage());
 echo $OUTPUT->footer();
