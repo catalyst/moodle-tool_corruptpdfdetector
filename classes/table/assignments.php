@@ -62,6 +62,7 @@ class assignments extends html_table
             get_string('reasonheader', 'tool_corruptpdfdetector'),
             get_string('submittedheader', 'tool_corruptpdfdetector'),
             get_string('detectedheader', 'tool_corruptpdfdetector'),
+            get_string('fixedheader', 'tool_corruptpdfdetector'),
         ];
         $data = [];
 
@@ -83,7 +84,8 @@ class assignments extends html_table
                 new html_table_cell($record->email),
                 new html_table_cell($record->message),
                 new html_table_cell(userdate($record->submitted, '%Y-%m-%d %H:%M:%S', 99, false, false)),
-                new html_table_cell(userdate($record->detected, '%Y-%m-%d %H:%M:%S', 99, false, false))
+                new html_table_cell(userdate($record->detected, '%Y-%m-%d %H:%M:%S', 99, false, false)),
+                new html_table_cell($record->fixed?'Yes':'No'),
             ));
 
             $data[] = $row;

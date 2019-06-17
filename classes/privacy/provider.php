@@ -17,7 +17,7 @@
 /**
  * Privacy Subsystem implementation for tool_corruppdfdetector.
  *
- * @package    tool_corruppdfdetector
+ * @package    tool_corruptpdfdetector
  * @copyright  2019 John Yao <johnyao@catalyst-au.net>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */

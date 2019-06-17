@@ -36,6 +36,7 @@ $string['submittedheader'] = 'Last modified';
 $string['reasonheader'] = 'Reason';
 $string['pluginname'] = 'Corrupt pdf assignment finder';
 $string['detectedheader'] = 'Detected';
+$string['fixedheader'] = 'Fixed';
 $string['task_scan_assignments'] = 'Scan assignments task';
 $string['task_fix_assignments'] = 'Fix assignments task';
 $string['error_percentage'] = 'Faulty pdf file percentage: ';

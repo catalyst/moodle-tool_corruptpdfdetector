@@ -47,21 +47,18 @@ class fix_assignments extends \core\task\scheduled_task
         global $DB;
 
         // Fetch all broken assignment submissions.
-        $records = $DB->get_records_sql('SELECT * FROM {tool_pdfdetect_assigns}');
+        $records = $DB->get_recordset('tool_pdfdetect_assigns', array('fixed' => false));
 
         if (count($records) > 0) {
             foreach ($records as $submission) {
                 $contenthash = $submission->filename;
-                try {
-                    $params['contenthash'] = $contenthash;
-                    $DB->delete_records_select('files',
-                        "contenthash = :contenthash AND filename = 'combined.pdf'
-                         AND (filearea = 'combined' OR filearea = 'partial')",
-                        $params);
-                    $DB->delete_records('tool_pdfdetect_assigns', array('filename' => $contenthash));
-                } catch (\Exception $e) {
-                    throw $e;
-                }
+                $params['contenthash'] = $contenthash;
+                $DB->delete_records_select('files',
+                    "contenthash = :contenthash AND filename = 'combined.pdf'
+                        AND (filearea = 'combined' OR filearea = 'partial')",
+                    $params);
+                $submission->fixed = true;
+                $DB->update_record('tool_pdfdetect_assigns', $submission);
             }
         }
     }
