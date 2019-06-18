@@ -61,6 +61,7 @@ class fix_assignments extends \core\task\scheduled_task
                 $DB->update_record('tool_pdfdetect_assigns', $submission);
             }
         }
+        $records->close();
     }
 
 }
