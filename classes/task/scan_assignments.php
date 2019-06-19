@@ -84,6 +84,10 @@ class scan_assignments extends \core\task\scheduled_task
                     $detected->submitted = $submission->timemodified;
                     if ($pdfwitherror != null) {
                         $detected->detected = $pdfwitherror->detected;
+                        $detected->filename = $pdfwitherror->filename;
+                        $detected->message = $pdfwitherror->message;
+                        $detected->submitted = $pdfwitherror->submitted;
+                        $detected->fixed = false;
                     } else {
                         $detected->fixed = true;
                     }
