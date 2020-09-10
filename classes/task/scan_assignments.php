@@ -28,7 +28,7 @@ namespace tool_corruptpdfdetector\task;
 defined('MOODLE_INTERNAL') || die();
 global $CFG;
 require_once($CFG->dirroot . '/mod/assign/locallib.php');
-require_once($CFG->dirroot . '/mod/assign/feedback/editpdf/fpdi/fpdi_pdf_parser.php');
+require_once($CFG->dirroot . '/mod/assign/feedback/editpdf/fpdi/autoload.php');
 
 define("ONE", 1);
 define("NUMBER_OF_EACH_RUN", 1000);
@@ -154,8 +154,16 @@ class scan_assignments extends \core\task\scheduled_task
         if ($pdf) {
             try {
                 $tmppdfpath = $pdf->copy_content_to_temp();
-                $fpdf = new \fpdi_pdf_parser($tmppdfpath);
-                unset($fpdf);
+                // Confirm, that PDF has correct header which can be parsed to get the version.
+                $source = fopen($tmppdfpath, 'r');
+                $stream = new \setasign\Fpdi\PdfParser\StreamReader($source, true);
+                $parser = new \setasign\Fpdi\PdfParser\PdfParser($stream);
+                $parser->getPdfVersion();
+                // Confirm, that PDF has correct body.
+                $reader = new \setasign\Fpdi\PdfReader\PdfReader($parser);
+                $reader->getPageCount();
+                // If no exception has been thrown the file has a correct structure.
+                unset($stream);
             } catch (\Exception $e) {
                 $pdfwitherror = new \stdClass();
                 $pdfwitherror->assignid = $submission->assignment;
