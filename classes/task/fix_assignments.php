@@ -41,7 +41,7 @@ class fix_assignments extends \core\task\scheduled_task {
         global $DB;
 
         // Fetch all broken assignment submissions.
-        $records = $DB->get_recordset('tool_pdfdetect_assigns', ['fixed' => false]);
+        $records = $DB->get_recordset('tool_corruptpdfdetector_assigns', ['fixed' => false]);
 
         foreach ($records as $submission) {
             $contenthash = $submission->filename;
@@ -53,7 +53,7 @@ class fix_assignments extends \core\task\scheduled_task {
                 $params
             );
             $submission->fixed = true;
-            $DB->update_record('tool_pdfdetect_assigns', $submission);
+            $DB->update_record('tool_corruptpdfdetector_assigns', $submission);
         }
         $records->close();
     }

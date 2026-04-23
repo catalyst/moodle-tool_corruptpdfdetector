@@ -26,8 +26,8 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'tool_corruptpdfdetector';
-$plugin->release   = 2026042300;
-$plugin->version   = 2026042300;
+$plugin->release   = 2026042301;
+$plugin->version   = 2026042301;
 $plugin->requires  = 2024100700;
 $plugin->supported = [405, 405];
 $plugin->maturity  = MATURITY_ALPHA;

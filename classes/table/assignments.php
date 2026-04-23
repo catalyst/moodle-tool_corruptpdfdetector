@@ -88,7 +88,7 @@ class assignments extends html_table {
     private function get_detected_assignments() {
         global $DB;
 
-        $records = $DB->get_records('tool_pdfdetect_assigns', [], 'detected ASC');
+        $records = $DB->get_records('tool_corruptpdfdetector_assigns', [], 'detected ASC');
 
         return $records;
     }
@@ -106,7 +106,7 @@ class assignments extends html_table {
 
         $submissioncount = $DB->count_records('assign_submission');
         $filecount = $DB->count_records_select(
-            'tool_pdfdetect_assigns',
+            'tool_corruptpdfdetector_assigns',
             'fixed = ?',
             [false],
             'COUNT(DISTINCT submissionid)'
