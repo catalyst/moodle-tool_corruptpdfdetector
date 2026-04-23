@@ -14,6 +14,13 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+namespace tool_corruptpdfdetector\privacy;
+
+use core_privacy\local\request\approved_userlist;
+use core_privacy\local\request\contextlist;
+use core_privacy\local\request\approved_contextlist;
+use core_privacy\local\request\userlist;
+
 /**
  * Privacy Subsystem implementation for tool_corruppdfdetector.
  *
@@ -21,30 +28,10 @@
  * @copyright  2019 John Yao <johnyao@catalyst-au.net>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
-namespace tool_corruptpdfdetector\privacy;
-
-use core_privacy\local\legacy_polyfill;
-use core_privacy\local\request\approved_userlist;
-use \core_privacy\local\request\contextlist;
-use \core_privacy\local\request\approved_contextlist;
-use core_privacy\local\request\userlist;
-
-defined('MOODLE_INTERNAL') || die();
-
-/**
- * Privacy Subsystem for tool_corruppdfdetector implementing null_provider.
- *
- * @copyright  2019 John Yao <johnyao@catalyst-au.net>
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */
 class provider implements
     \core_privacy\local\metadata\provider,
     \core_privacy\local\request\core_userlist_provider,
     \core_privacy\local\request\plugin\provider {
-
-    use legacy_polyfill;
-
     /**
      * Get the language string identifier with the component's language
      * file to explain why this plugin stores no data.
@@ -52,7 +39,7 @@ class provider implements
      * @param   collection $collection
      * @return  collection
      */
-    public static function _get_metadata($collection) {
+    public static function get_metadata($collection): \core_privacy\local\metadata\collection {
         $collection->add_database_table(
             'tool_pdfdetect_assigns',
             [
@@ -72,7 +59,7 @@ class provider implements
      * @param   int         $userid     The user to search.
      * @return  contextlist $contextlist  The contextlist containing the list of contexts used in this plugin.
      */
-    public static function _get_contexts_for_userid(int $userid) : contextlist {
+    public static function get_contexts_for_userid(int $userid): contextlist {
         return new contextlist();
     }
 
@@ -81,7 +68,7 @@ class provider implements
      *
      * @param approved_contextlist $contextlist The approved contexts to export information for.
      */
-    public static function _export_user_data(approved_contextlist $contextlist) {
+    public static function export_user_data(approved_contextlist $contextlist) {
     }
 
     /**
@@ -89,7 +76,7 @@ class provider implements
      *
      * @param \context $context A user context.
      */
-    public static function _delete_data_for_all_users_in_context(\context $context) {
+    public static function delete_data_for_all_users_in_context(\context $context) {
     }
 
     /**
@@ -97,7 +84,7 @@ class provider implements
      *
      * @param   approved_contextlist    $contextlist    The approved contexts and user information to delete information for.
      */
-    public static function _delete_data_for_user(approved_contextlist $contextlist) {
+    public static function delete_data_for_user(approved_contextlist $contextlist) {
     }
 
     /**

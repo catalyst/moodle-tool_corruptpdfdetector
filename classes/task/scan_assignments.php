@@ -14,6 +14,20 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+namespace tool_corruptpdfdetector\task;
+
+use stdClass;
+use assign;
+
+defined('MOODLE_INTERNAL') || die();
+
+global $CFG;
+require_once($CFG->dirroot . '/mod/assign/locallib.php');
+require_once($CFG->dirroot . '/mod/assign/feedback/editpdf/fpdi/autoload.php');
+
+define("ONE", 1);
+define("NUMBER_OF_EACH_RUN", 1000);
+
 /**
  * Task to scan assignments.
  *
@@ -22,23 +36,8 @@
  * @copyright  2019 Catalyst IT
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+class scan_assignments extends \core\task\scheduled_task {
 
-namespace tool_corruptpdfdetector\task;
-
-defined('MOODLE_INTERNAL') || die();
-global $CFG;
-require_once($CFG->dirroot . '/mod/assign/locallib.php');
-require_once($CFG->dirroot . '/mod/assign/feedback/editpdf/fpdi/autoload.php');
-
-define("ONE", 1);
-define("NUMBER_OF_EACH_RUN", 1000);
-
-if (!defined('MOODLE_INTERNAL')) {
-    die('Direct access to this script is forbidden.'); // It must be included from a Moodle page.
-}
-
-class scan_assignments extends \core\task\scheduled_task
-{
     /**
      * {@inheritDoc}
      * @see \core\task\scheduled_task::get_name()
@@ -80,7 +79,7 @@ class scan_assignments extends \core\task\scheduled_task
                 $detectedsubmission = $this->detected_submission($submission);
                 if ($detectedsubmission != null) {
                     $pdfwitherror = $this->check_submission_combined_pdf($submission);
-                    $detected = $DB->get_record('tool_pdfdetect_assigns', array('submissionid' => $submission->id));
+                    $detected = $DB->get_record('tool_pdfdetect_assigns', ['submissionid' => $submission->id]);
                     $detected->submitted = $submission->timemodified;
                     if ($pdfwitherror != null) {
                         $detected->detected = $pdfwitherror->detected;
@@ -109,7 +108,17 @@ class scan_assignments extends \core\task\scheduled_task
         $DB->insert_record('tool_pdfdetect_runs', $run);
     }
 
-    private function get_pdf_file_for_assignment($assignment, $submission) {
+    /**
+     * Retrieves the PDF file associated with a given assignment and submission.
+     * This method fetches the combined or partial PDF file created for grading
+     * a specific user's submission to an assignment, based on the grading context.
+     *
+     * @param assign $assignment The assignment instance from which the PDF file is retrieved.
+     * @param stdClass $submission The submission object containing details such as userid and attempt number.
+     *
+     * @return \stored_file|null The stored file instance representing the PDF file, or null if no file exists.
+     */
+    private function get_pdf_file_for_assignment(assign $assignment, stdClass $submission) {
         $grade = $assignment->get_user_grade($submission->userid, true, $submission->attemptnumber);
         $contextid = $assignment->get_context()->id;
         $component = 'assignfeedback_editpdf';
@@ -127,7 +136,14 @@ class scan_assignments extends \core\task\scheduled_task
         }
     }
 
-    private function detected_submission($submission) {
+    /**
+     * Detects a previously recorded submission in the 'tool_pdfdetect_assigns' table.
+     *
+     * @param stdClass $submission The submission object containing the ID to look up in the database.
+     *
+     * @return stdClass|null The detected submission record if found, or null if no matching record exists.
+     */
+    private function detected_submission(stdClass $submission): ?stdClass {
         global $DB;
 
         $params = ['submissionid' => $submission->id];
@@ -141,7 +157,16 @@ class scan_assignments extends \core\task\scheduled_task
         return null;
     }
 
-    private function check_submission_combined_pdf($submission) {
+    /**
+     * Validates the combined PDF of a submission by checking its structure and metadata.
+     * Ensures the PDF has a correct header, body, and can be parsed without errors.
+     *
+     * @param stdClass $submission The submission object containing assignment and user details.
+     *
+     * @return stdClass|null An object with details of the PDF error and context if validation fails,
+     *                       or null if no issues are found.
+     */
+    private function check_submission_combined_pdf(stdClass $submission): ?stdClass {
         global $DB;
 
         $cm = \get_coursemodule_from_instance('assign', $submission->assignment, 0, false, MUST_EXIST);
@@ -149,7 +174,7 @@ class scan_assignments extends \core\task\scheduled_task
         $assignment = new \assign($context, null, null);
 
         $pdf = $this->get_pdf_file_for_assignment($assignment, $submission);
-        $user = $DB->get_record('user', array('id' => $submission->userid), '*', MUST_EXIST);
+        $user = $DB->get_record('user', ['id' => $submission->userid], '*', MUST_EXIST);
 
         if ($pdf) {
             try {

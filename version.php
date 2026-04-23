@@ -25,8 +25,9 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2019050501; // The current plugin version (Date: YYYYMMDDXX)
-$plugin->requires  = 2018051705; // Requires this Moodle version
-$plugin->component = 'tool_corruptpdfdetector'; // Full name of the plugin (used for diagnostics).
-
-$plugin->maturity  = MATURITY_ALPHA; // This version's maturity level.
+$plugin->component = 'tool_corruptpdfdetector';
+$plugin->release   = 2026042300;
+$plugin->version   = 2026042300;
+$plugin->requires  = 2024100700;
+$plugin->supported = [405, 405];
+$plugin->maturity  = MATURITY_ALPHA;

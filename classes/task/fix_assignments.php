@@ -14,6 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+namespace tool_corruptpdfdetector\task;
+
 /**
  * Task to fix assignments.
  *
@@ -22,15 +24,8 @@
  * @copyright  2019 Catalyst IT
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+class fix_assignments extends \core\task\scheduled_task {
 
-namespace tool_corruptpdfdetector\task;
-
-if (!defined('MOODLE_INTERNAL')) {
-    die('Direct access to this script is forbidden.'); // It must be included from a Moodle page.
-}
-
-class fix_assignments extends \core\task\scheduled_task
-{
     /**
      * {@inheritDoc}
      * @see \core\task\scheduled_task::get_name()
@@ -47,7 +42,7 @@ class fix_assignments extends \core\task\scheduled_task
         global $DB;
 
         // Fetch all broken assignment submissions.
-        $records = $DB->get_recordset('tool_pdfdetect_assigns', array('fixed' => false));
+        $records = $DB->get_recordset('tool_pdfdetect_assigns', ['fixed' => false]);
 
         foreach ($records as $submission) {
             $contenthash = $submission->filename;

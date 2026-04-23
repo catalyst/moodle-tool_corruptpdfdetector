@@ -24,22 +24,22 @@
  */
 
 
-$string['table_assign_headers'] = 'Detected Assignments';
-$string['name'] = 'Corrupt PDF assignment Detetor';
+$string['assignmentheader'] = 'Assignment';
+$string['courseheader'] = 'Course';
+$string['detectedheader'] = 'Detected';
+$string['error_percentage'] = 'Faulty pdf file percentage: ';
+$string['fixedheader'] = 'Fixed';
 $string['h1_current'] = 'Detected corrupt pdf submissions';
 $string['lastrun'] = 'Last run';
 $string['lastrundesc'] = 'Only compare the assignment submissions updated after this time';
-$string['courseheader'] = 'Course';
-$string['assignmentheader'] = 'Assignment';
-$string['userfullnameheader'] = 'Student name';
-$string['submittedheader'] = 'Last modified';
-$string['reasonheader'] = 'Reason';
+$string['name'] = 'Corrupt PDF assignment Detetor';
 $string['pluginname'] = 'Corrupt pdf assignment finder';
-$string['detectedheader'] = 'Detected';
-$string['fixedheader'] = 'Fixed';
-$string['task_scan_assignments'] = 'Scan assignments task';
-$string['task_fix_assignments'] = 'Fix assignments task';
-$string['error_percentage'] = 'Faulty pdf file percentage: ';
 $string['privacy:metadata:tool_corruppdfdetector'] = 'Information about the assignment that found corrupt pdf file. This includes the course, assignment name, student name and email.';
 $string['privacy:metadata:tool_corruppdfdetector:email'] = 'The email of the user who submits the assignment.';
 $string['privacy:metadata:tool_corruppdfdetector:userfullname'] = 'The full name of the user who submits the assignment.';
+$string['reasonheader'] = 'Reason';
+$string['submittedheader'] = 'Last modified';
+$string['table_assign_headers'] = 'Detected Assignments';
+$string['task_fix_assignments'] = 'Fix assignments task';
+$string['task_scan_assignments'] = 'Scan assignments task';
+$string['userfullnameheader'] = 'Student name';
