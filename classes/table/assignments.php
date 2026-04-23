@@ -14,20 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-/**
- * Corrupt pdf assignment list.
- *
- * @package    tool_corruptpdfdetector
- * @author     John Yao <johnyao@catalyst-au.net>
- * @copyright  2019 Catalyst IT
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */
-
 namespace tool_corruptpdfdetector\table;
-
-if (!defined('MOODLE_INTERNAL')) {
-    die('Direct access to this script is forbidden.'); // It must be included from a Moodle page.
-}
 
 use html_table;
 use html_table_cell;
@@ -36,15 +23,15 @@ use moodle_url;
 use html_writer;
 
 /**
- * Detected assignment table.
+ * Corrupt pdf assignment list.
  *
  * @package    tool_corruptpdfdetector
  * @author     John Yao <johnyao@catalyst-au.net>
  * @copyright  2019 Catalyst IT
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class assignments extends html_table
-{
+class assignments extends html_table {
+
     /**
      * Constructor
      */
@@ -71,12 +58,12 @@ class assignments extends html_table
             $cm = get_coursemodule_from_instance('assign', $record->assignid);
             $assignurl = new moodle_url('/mod/assign/view.php', [
                 'id' => $cm->id,
-                'action' => 'grader'
+                'action' => 'grader',
             ]);
 
             $linktoassign = html_writer::link($assignurl, $record->assignname);
 
-            $row = new html_table_row(array(
+            $row = new html_table_row([
                 new html_table_cell($record->coursename),
                 new html_table_cell($linktoassign),
                 new html_table_cell($record->userfullname),
@@ -84,8 +71,8 @@ class assignments extends html_table
                 new html_table_cell($record->message),
                 new html_table_cell(userdate($record->submitted, '%Y-%m-%d %H:%M:%S', 99, false, false)),
                 new html_table_cell(userdate($record->detected, '%Y-%m-%d %H:%M:%S', 99, false, false)),
-                new html_table_cell($record->fixed?'Yes':'No'),
-            ));
+                new html_table_cell($record->fixed ? 'Yes' : 'No'),
+            ]);
 
             $data[] = $row;
         }
@@ -107,12 +94,20 @@ class assignments extends html_table
         return $records;
     }
 
+    /**
+     * Calculates the percentage of assignments with unresolved issues.
+     * This method determines the proportion of submissions with detected, unresolved issues
+     * out of the total number of submissions as a percentage.
+     * If there are no submissions or no unresolved issues, it returns "0" as the percentage.
+     *
+     * @return string The percentage of unresolved issues, formatted as a string with a "%" sign.
+     */
     public function get_percentage() {
         global $DB;
 
         $submissioncount = $DB->count_records('assign_submission');
         $filecount = $DB->count_records_select('tool_pdfdetect_assigns',
-        'fixed = ?', array(false), 'COUNT(DISTINCT submissionid)');
+        'fixed = ?', [false], 'COUNT(DISTINCT submissionid)');
 
         if ($filecount === 0 || $submissioncount === 0) {
             return '0';

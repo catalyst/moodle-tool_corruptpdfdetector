@@ -6,13 +6,13 @@
   <TABLES>
     <TABLE NAME="tool_pdfdetect_assigns" COMMENT="Table to store affected assignments">
       <FIELDS>
-        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
-        <FIELD NAME="assignid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+      <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+      <FIELD NAME="assignid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
       <FIELD NAME="submissionid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
       <FIELD NAME="coursename" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false"/>
       <FIELD NAME="assignname" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false"/>
       <FIELD NAME="userfullname" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false"/>
-	    <FIELD NAME="email" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false"/>
+	  <FIELD NAME="email" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false"/>
       <FIELD NAME="filename" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false"/>
       <FIELD NAME="message" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false"/>
       <FIELD NAME="submitted" TYPE="int" LENGTH="20" NOTNULL="false" SEQUENCE="false"/>
