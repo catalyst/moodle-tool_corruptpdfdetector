@@ -4,7 +4,7 @@
     xsi:noNamespaceSchemaLocation="../../../../lib/xmldb/xmldb.xsd"
 >
   <TABLES>
-    <TABLE NAME="tool_pdfdetect_assigns" COMMENT="Table to store affected assignments">
+    <TABLE NAME="tool_corruptpdfdetector_assigns" COMMENT="Table to store affected assignments">
       <FIELDS>
       <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
       <FIELD NAME="assignid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
@@ -27,7 +27,7 @@
 	      <INDEX NAME="submissionid" UNIQUE="true" FIELDS="submissionid"/>
       </INDEXES>
     </TABLE>
-        <TABLE NAME="tool_pdfdetect_runs" COMMENT="Table to store completed runs">
+        <TABLE NAME="tool_corruptpdfdetector_runs" COMMENT="Table to store completed runs">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="lastsubmissionid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>

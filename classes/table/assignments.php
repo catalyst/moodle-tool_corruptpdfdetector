@@ -31,7 +31,6 @@ use html_writer;
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class assignments extends html_table {
-
     /**
      * Constructor
      */
@@ -89,7 +88,7 @@ class assignments extends html_table {
     private function get_detected_assignments() {
         global $DB;
 
-        $records = $DB->get_records('tool_pdfdetect_assigns', [], 'detected ASC');
+        $records = $DB->get_records('tool_corruptpdfdetector_assigns', [], 'detected ASC');
 
         return $records;
     }
@@ -106,12 +105,16 @@ class assignments extends html_table {
         global $DB;
 
         $submissioncount = $DB->count_records('assign_submission');
-        $filecount = $DB->count_records_select('tool_pdfdetect_assigns',
-        'fixed = ?', [false], 'COUNT(DISTINCT submissionid)');
+        $filecount = $DB->count_records_select(
+            'tool_corruptpdfdetector_assigns',
+            'fixed = ?',
+            [false],
+            'COUNT(DISTINCT submissionid)'
+        );
 
         if ($filecount === 0 || $submissioncount === 0) {
             return '0';
         }
-        return round ($filecount * 100 / $submissioncount).'%';
+        return round($filecount * 100 / $submissioncount) . '%';
     }
 }

@@ -25,9 +25,6 @@ global $CFG;
 require_once($CFG->dirroot . '/mod/assign/locallib.php');
 require_once($CFG->dirroot . '/mod/assign/feedback/editpdf/fpdi/autoload.php');
 
-define("ONE", 1);
-define("NUMBER_OF_EACH_RUN", 1000);
-
 /**
  * Task to scan assignments.
  *
@@ -37,7 +34,6 @@ define("NUMBER_OF_EACH_RUN", 1000);
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class scan_assignments extends \core\task\scheduled_task {
-
     /**
      * {@inheritDoc}
      * @see \core\task\scheduled_task::get_name()
@@ -55,9 +51,9 @@ class scan_assignments extends \core\task\scheduled_task {
 
         // Get the last submission id that had been checked in last run.
         $lastrun = $DB->get_records_sql('SELECT lastsubmissionid
-                                               FROM {tool_pdfdetect_runs}
+                                               FROM {tool_corruptpdfdetector_runs}
                                            ORDER BY runtime
-                                               DESC LIMIT :one', ['one' => ONE]);
+                                               DESC LIMIT 1');
 
         $lastsubmitid = 0;
         if ($lastrun) {
@@ -69,7 +65,7 @@ class scan_assignments extends \core\task\scheduled_task {
                                               WHERE userid > 0
                                                 AND id > :id
                                            ORDER BY timecreated
-                                                ASC LIMIT :num', ['id' => $lastsubmitid, 'num' => NUMBER_OF_EACH_RUN]);
+                                                ASC', ['id' => $lastsubmitid], 0, 1000);
         $detectednum = 0;
         $run = new \stdClass();
 
@@ -79,7 +75,7 @@ class scan_assignments extends \core\task\scheduled_task {
                 $detectedsubmission = $this->detected_submission($submission);
                 if ($detectedsubmission != null) {
                     $pdfwitherror = $this->check_submission_combined_pdf($submission);
-                    $detected = $DB->get_record('tool_pdfdetect_assigns', ['submissionid' => $submission->id]);
+                    $detected = $DB->get_record('tool_corruptpdfdetector_assigns', ['submissionid' => $submission->id]);
                     $detected->submitted = $submission->timemodified;
                     if ($pdfwitherror != null) {
                         $detected->detected = $pdfwitherror->detected;
@@ -90,12 +86,12 @@ class scan_assignments extends \core\task\scheduled_task {
                     } else {
                         $detected->fixed = true;
                     }
-                    $DB->update_record('tool_pdfdetect_assigns', $detected);
+                    $DB->update_record('tool_corruptpdfdetector_assigns', $detected);
                 } else {
                     $pdfwitherror = $this->check_submission_combined_pdf($submission);
                     if ($pdfwitherror != null) {
                         $detectednum++;
-                        $DB->insert_record('tool_pdfdetect_assigns', $pdfwitherror);
+                        $DB->insert_record('tool_corruptpdfdetector_assigns', $pdfwitherror);
                     }
                 }
             }
@@ -105,7 +101,7 @@ class scan_assignments extends \core\task\scheduled_task {
         }
         $run->runtime = time();
         $run->detectednumber = $detectednum;
-        $DB->insert_record('tool_pdfdetect_runs', $run);
+        $DB->insert_record('tool_corruptpdfdetector_runs', $run);
     }
 
     /**
@@ -137,7 +133,7 @@ class scan_assignments extends \core\task\scheduled_task {
     }
 
     /**
-     * Detects a previously recorded submission in the 'tool_pdfdetect_assigns' table.
+     * Detects a previously recorded submission in the 'tool_corruptpdfdetector_assigns' table.
      *
      * @param stdClass $submission The submission object containing the ID to look up in the database.
      *
@@ -148,7 +144,7 @@ class scan_assignments extends \core\task\scheduled_task {
 
         $params = ['submissionid' => $submission->id];
         $select = $DB->sql_compare_text('submissionid') . ' = ' . $DB->sql_compare_text(':submissionid');
-        $detectedsubmission = $DB->get_record_select('tool_pdfdetect_assigns', $select, $params);
+        $detectedsubmission = $DB->get_record_select('tool_corruptpdfdetector_assigns', $select, $params);
 
         if (!empty($detectedsubmission)) {
             return $detectedsubmission;

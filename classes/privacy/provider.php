@@ -41,7 +41,7 @@ class provider implements
      */
     public static function get_metadata($collection): \core_privacy\local\metadata\collection {
         $collection->add_database_table(
-            'tool_pdfdetect_assigns',
+            'tool_corruptpdfdetector_assigns',
             [
                 'email' => 'privacy:metadata:tool_corruppdfdetector:email',
                 'userfullname' => 'privacy:metadata:tool_corruppdfdetector:userfullname',

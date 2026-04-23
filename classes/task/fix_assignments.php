@@ -25,7 +25,6 @@ namespace tool_corruptpdfdetector\task;
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class fix_assignments extends \core\task\scheduled_task {
-
     /**
      * {@inheritDoc}
      * @see \core\task\scheduled_task::get_name()
@@ -42,19 +41,20 @@ class fix_assignments extends \core\task\scheduled_task {
         global $DB;
 
         // Fetch all broken assignment submissions.
-        $records = $DB->get_recordset('tool_pdfdetect_assigns', ['fixed' => false]);
+        $records = $DB->get_recordset('tool_corruptpdfdetector_assigns', ['fixed' => false]);
 
         foreach ($records as $submission) {
             $contenthash = $submission->filename;
             $params['contenthash'] = $contenthash;
-            $DB->delete_records_select('files',
+            $DB->delete_records_select(
+                'files',
                 "contenthash = :contenthash AND filename = 'combined.pdf'
                         AND (filearea = 'combined' OR filearea = 'partial')",
-                $params);
+                $params
+            );
             $submission->fixed = true;
-            $DB->update_record('tool_pdfdetect_assigns', $submission);
+            $DB->update_record('tool_corruptpdfdetector_assigns', $submission);
         }
         $records->close();
     }
-
 }
