@@ -25,9 +25,6 @@ global $CFG;
 require_once($CFG->dirroot . '/mod/assign/locallib.php');
 require_once($CFG->dirroot . '/mod/assign/feedback/editpdf/fpdi/autoload.php');
 
-define("ONE", 1);
-define("NUMBER_OF_EACH_RUN", 1000);
-
 /**
  * Task to scan assignments.
  *
@@ -56,7 +53,7 @@ class scan_assignments extends \core\task\scheduled_task {
         $lastrun = $DB->get_records_sql('SELECT lastsubmissionid
                                                FROM {tool_corruptpdfdetector_runs}
                                            ORDER BY runtime
-                                               DESC LIMIT :one', ['one' => ONE]);
+                                               DESC LIMIT 1');
 
         $lastsubmitid = 0;
         if ($lastrun) {
@@ -68,7 +65,7 @@ class scan_assignments extends \core\task\scheduled_task {
                                               WHERE userid > 0
                                                 AND id > :id
                                            ORDER BY timecreated
-                                                ASC LIMIT :num', ['id' => $lastsubmitid, 'num' => NUMBER_OF_EACH_RUN]);
+                                                ASC', ['id' => $lastsubmitid], 0, 1000);
         $detectednum = 0;
         $run = new \stdClass();
 
