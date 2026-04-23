@@ -29,7 +29,7 @@ require_once($CFG->libdir . '/adminlib.php');
 require_capability('moodle/site:config', context_system::instance());
 admin_externalpage_setup('tool_corruptpdfdetector');
 
-$assignments = new tool_corruptpdfdetector\table\assignments;
+$assignments = new tool_corruptpdfdetector\table\assignments();
 
 echo $OUTPUT->header();
 echo html_writer::tag('h1', get_string('h1_current', 'tool_corruptpdfdetector'));

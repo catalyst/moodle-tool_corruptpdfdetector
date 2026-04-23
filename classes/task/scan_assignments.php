@@ -37,7 +37,6 @@ define("NUMBER_OF_EACH_RUN", 1000);
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class scan_assignments extends \core\task\scheduled_task {
-
     /**
      * {@inheritDoc}
      * @see \core\task\scheduled_task::get_name()
