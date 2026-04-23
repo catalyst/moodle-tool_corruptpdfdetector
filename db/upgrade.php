@@ -56,4 +56,3 @@ function xmldb_tool_corruptpdfdetector_upgrade($oldversion = 0) {
 
     return true;
 }
-
