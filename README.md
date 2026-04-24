@@ -12,7 +12,7 @@ This tool finds out which assignment has a badly converted PDF file.
 
 | Moodle Version   | Branch            |
 |------------------|-------------------|
-| Moodle 4.5+      | MOODLE_405_STABLE |
+| Moodle 4.5       | MOODLE_405_STABLE |
 
 
 # How it works
